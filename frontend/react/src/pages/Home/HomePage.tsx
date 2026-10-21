@@ -1,48 +1,26 @@
-import { Link } from 'react-router-dom'
+import { SquareDashedMousePointerIcon } from 'lucide-react'
 
-const modules = [
-  {
-    title: 'Clientes',
-    description: 'Consulte e gerencie os clientes cadastrados.',
-    icon: '♙',
-    path: '/clientes',
-  },
-]
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <div className="home-page">
-      <section className="welcome-panel">
+    <section className="page">
+      <header className="page-header">
         <div>
-          <span className="eyebrow">PAINEL PRINCIPAL</span>
-          <h2>Bem-vindo </h2>
-          <p>Gerencie as informações da sua empresa em um só lugar.</p>
+          <h1>
+            {' '}
+            <SquareDashedMousePointerIcon size={45} />
+            Dashboard
+          </h1>
+          <p>Visão geral do sistema e dos serviços.</p>
         </div>
+      </header>
 
-        <div className="welcome-symbol">E</div>
-      </section>
-
-      <section className="home-section">
-        <div className="section-heading">
-          <div>
-            <h2>Módulos</h2>
-            <p>Acesse as áreas do sistema.</p>
-          </div>
-        </div>
-
-        <div className="module-grid">
-          {modules.map((module) => (
-            <Link to={module.path} className="module-card" key={module.path}>
-              <div className="module-icon">{module.icon}</div>
-              <h3>{module.title}</h3>
-              <p>{module.description}</p>
-              <span className="module-action">
-                Acessar módulo <span>→</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-    </div>
+      <div className="welcome-panel">
+        <h2>Bem-vindo ao sistema</h2>
+        <p>
+          Aqui reuniremos os indicadores administrativos e o monitoramento das
+          APIs Go, Django e FastAPI.
+        </p>
+      </div>
+    </section>
   )
 }

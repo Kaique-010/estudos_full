@@ -1,0 +1,50 @@
+::after {
+  display: flex;
+  content: '';
+  display: block;
+  clear: both;
+}
+section.clientes-page {
+  padding: 40px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: #a8c0d8;
+  transform: scale(1.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+}
+
+table.data-table {
+  margin-top: 20px;
+}
+.thead {
+  padding: 10px;
+  text-align: left;
+}
+.data-card-header {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  direction: rtl;
+  
+}
