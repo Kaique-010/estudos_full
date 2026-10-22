@@ -2,7 +2,9 @@
 import re
 from django.db import transaction
 from cliente.models import Cliente
-
+from django.db.models import Q
+from django.utils.dateparse import parse_date
+from rest_framework.exceptions import ValidationError
 
 
 class ClienteService:
@@ -100,9 +102,65 @@ class ClienteService:
 
     
     @staticmethod
-    def listar_todos() -> list:
-        return Cliente.objects.all()
+    def listar_todos(
+        busca=None,
+        data_inicio=None,
+        data_fim=None,
+        ordenacao="id",
+    ):
+        queryset = Cliente.objects.all()
+
+        # Busca textual
+        if busca:
+            queryset = queryset.filter(
+                Q(nome__icontains=busca)
+                | Q(documento__icontains=busca)
+                | Q(email__icontains=busca)
+                | Q(telefone__icontains=busca)
+            )
+
+        # Validação das datas
+        inicio = ClienteService._validar_data(
+            data_inicio, "data_inicio"
+        )
+        fim = ClienteService._validar_data(
+            data_fim, "data_fim"
+        )
+
+        if inicio and fim and inicio > fim:
+            raise ValidationError({
+                "periodo": "data_inicio não pode ser posterior a data_fim."
+            })
+
+        if inicio:
+            queryset = queryset.filter(criado_em__date__gte=inicio)
+
+        if fim:
+            queryset = queryset.filter(criado_em__date__lte=fim)
+
+        # Ordenação permitida
+        campos_permitidos = {
+            "id",
+            "nome",
+            "documento",
+            "email",
+            "criado_em",
+            "atualizado_em",
+            "ativo",
+        }
+
+        campo = ordenacao.removeprefix("-")
+
+        if campo not in campos_permitidos:
+            raise ValidationError({
+                "ordenacao": "Campo de ordenação inválido."
+            })
+
+        return queryset.order_by(ordenacao)
     
     @staticmethod
-    def buscar_por_id(id: int) -> Cliente:
-        return Cliente.objects.get(id=id)
+    def buscar_por_id(id: int, ativo: bool = True) -> Cliente:
+        return Cliente.objects.get(
+            id=id,
+            ativo=ativo,
+        )
