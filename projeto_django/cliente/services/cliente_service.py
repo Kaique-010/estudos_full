@@ -164,3 +164,18 @@ class ClienteService:
             id=id,
             ativo=ativo,
         )
+        
+        
+    @staticmethod
+    def _validar_data(valor, campo):
+        if not valor:
+            return None
+
+        data = parse_date(valor)
+
+        if data is None:
+            raise ValidationError({
+                campo: "Informe uma data no formato YYYY-MM-DD."
+            })
+
+        return data
